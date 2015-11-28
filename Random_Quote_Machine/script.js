@@ -1,6 +1,8 @@
 $(document).ready(function() {
 
+  //  get the twitter widget script used for the tweet button
   $.getScript('http://platform.twitter.com/widgets.js');
+  
   getQuote();
 
   $("#btn_QuoteMe").click(function() {
@@ -13,14 +15,14 @@ $(document).ready(function() {
       url: 'http://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1',
       success: function(data) {
         var post = data.shift();
-        $("#quote").html(post.content + "<p>— " + post.title + "</p>")
+        $("#quote").html(post.content)
+        $("#author").html("<p>— " + post.title + "</p>")
         var quoteText = $("#quote").text();
         $("#container").empty();
         twttr.widgets.createShareButton(
             'http://quotesondesign.com',
             document.getElementById('container'), {
-              text: quoteText.substring(0, 113) + "...",
-              size: "large"
+              text: quoteText.substring(0, 113) + "..."
             }
           );
       },

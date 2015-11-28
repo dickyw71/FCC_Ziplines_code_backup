@@ -1,10 +1,16 @@
 <div class="container">
-  <h1 class="text-primary text-center">Random Quote Machine</h1>
+  <h1 id="title" class="text-primary text-center">Random Quotes on Design</h1>
+  <div>
+    <button class="btn btn-default btn-block btn-lg" id="btn_QuoteMe">Get another random design quote</button>
+  </div>
   <div class="well">
-    <h2 class="text-center" id="quote"></h2>
+    <blockquote>
+      <h2 class="text-center" id="quote"></h2>
+      <h3 class="text-center" id="author"></h3>
+    </blockquote>
     <div id="container"></div>
   </div>
-  <div>
-    <button class="btn btn-primary btn-block" id="btn_QuoteMe">Get a new quote</button>
+  <div id="source">
+    <p class="text-muted">Source: <a href='http://quotesondesign.com' target='_blank'>Quotes on Design</a></p>
   </div>
 </div>
