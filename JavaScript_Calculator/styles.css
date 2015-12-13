@@ -1,0 +1,31 @@
+body {
+  background-color: black;
+}
+
+h1 {
+  font-family: 'Dosis', sans-serif;
+}
+
+#display {
+  text-align: right;
+  font-family: 'Roboto', sans-serif;
+  font-size: 76px;
+  color: white;
+  padding-right: 25px;
+}
+
+#calculator-view {
+  margin: auto;
+  width: 300px;
+}
+
+.btn-calculator {
+  padding: 3px, 6px;
+  font-size: 30px;
+  border-radius: 0px;
+  border-color: black;
+}
+.no-gutter > [class*='col-'] {
+    padding-right:0;
+    padding-left:0;
+}
