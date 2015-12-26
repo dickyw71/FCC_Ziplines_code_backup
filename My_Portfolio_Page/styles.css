@@ -1,4 +1,11 @@
-  .smaller-image {
+body {
+  background-color: black;
+}
+.container {
+  background-color: green;
+}
+
+.smaller-image {
     width: 200px;
   }
 
@@ -20,4 +27,4 @@
    width: 260px;
    border-radius: 4px;
    margin: 5 5 5 5;
- }
+ }  

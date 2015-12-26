@@ -3,6 +3,7 @@ $(document).ready(function() {
   var userIsInTheMiddleOfEnteringANumber = false;
   var operandStack = [];
   var operator = "";
+  const PRECISION = 6;
 
   /// ac click event handler
   $("#ac").click(function() {
@@ -17,13 +18,9 @@ $(document).ready(function() {
   /// plus/minus event handler
   $("#plus_minus").click(function() {
     var display = $("#display").text();
-    if (display !== "0") {
-      if (display.indexOf("-") == -1) {
-        $("#display").text("-" + display);
-      } else {
-        $("#display").text(display.substring(1));
-      }
-    }
+    var number = parseFloat(display);
+    number = number * -1;
+    $("#display").text(parseFloat(formatNumber(number, PRECISION)));
   });
 
   /// Percent event handler
@@ -33,11 +30,13 @@ $(document).ready(function() {
       var percentage = parseFloat(display) / 100;
       var currentOperand = operandStack.pop();
       if (currentOperand === undefined) {
-        $("#display").text(percentage);
+        percentage = formatNumber(percentage, PRECISION);
+        $("#display").text(parseFloat(percentage));
       } else {
         var percentOfOperand = currentOperand * percentage;
         operandStack.push(currentOperand);
-        $("#display").text(percentOfOperand);
+        percentOfOperand = formatNumber(percentOfOperand, PRECISION);
+        $("#display").text(parseFloat(percentOfOperand));
       }
     }
   });
@@ -140,8 +139,17 @@ $(document).ready(function() {
         break;
     }
     operator = "";
-    operandStack.push(result);
-    return result;
+    // trim result if longer than PRECISION (6) digits
+    result = formatNumber(result, PRECISION);
+    operandStack.push(parseFloat(result));
+    return parseFloat(result);
   }
 
+  /// formats a value to the specified precision
+  /// trims off un-needed zeros
+  /// returns the formatted value 
+  function formatNumber(value, precision) {
+    var number = value.toPrecision(precision);
+    return number;
+  }
 });
