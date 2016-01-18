@@ -1,0 +1,72 @@
+body {
+  background-color: #CCC;
+  width: 340px;
+}
+
+.pomodoro {
+  padding: 10px 0px 10px 5px;
+  margin: auto;
+  width: 340px;
+  background-color: #FFF;
+  border-radius: 10px;
+  border: solid;
+}
+
+.h1 {
+  padding: 10px 0px 10px 0px;
+  text-align: center;
+  text-shadow: 1px 1px 2px #000;
+  font-family: 'Rock Salt', cursive;
+  color: #F00;
+}
+
+.controls {
+  padding: 20px 0px 0px 0px;
+  margin: auto;
+  width: 340px; 
+}
+
+.plusMinus-controls {
+  margin: 0px 0px 0px 0px;
+  width: 20px;
+}
+
+.cancel-control {
+  display: none;
+}
+
+.reset-control {
+  display: none;
+}
+
+.btn-pomo {
+  padding: 10px 10px 10px 10px;
+  border-radius: 50%;
+  margin-top: 10px;  
+}
+
+.btn-pomo:hover {
+  cursor: default;
+}
+
+.btn-timer {
+  font-size: 36px;
+  border-width: 2px;
+  border-color: #000;
+  border-radius: 50%; 
+}
+
+.display {
+  width: 240px;
+  margin: auto;
+}
+
+.display:hover {
+  cursor: default;
+}
+
+.timer {
+  margin: 0px 0px 0px 0px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 116px;
+}
