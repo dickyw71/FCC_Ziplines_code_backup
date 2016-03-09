@@ -1,0 +1,40 @@
+.h1 {
+   font-family: 'Open Sans', sans-serif;
+    font-size: 96px;   
+}
+
+.day-light-times {
+  padding: 10px 0px 10px 0px;
+}
+
+.sunrise-img {
+  width: 30px;
+}
+
+.weather-icon {
+  padding: 10px 0px 10px 5px;
+  width: 130px;
+  min-width: 100px;
+}
+
+.temperature {
+  min-width: 130px; 
+}
+
+.btn-temp-toggle {
+  margin: 40px 0px 0px 10px;
+  font-size: 40px;
+}
+
+.loading {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 46px;   
+}
+
+.local-weather {
+  visibility: hidden;
+  background-color: #CCC;
+  border-radius: 10px;
+  max-width: 600px;
+  min-width: 200px;
+}
