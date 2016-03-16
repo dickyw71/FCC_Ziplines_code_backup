@@ -18,6 +18,9 @@ $(document).ready(function() {
     volume: 0.9
   });
 
+  // Begin modified countdown timer code snippet
+  // based on a tutorial by Yaphi Berhanu
+  // http://www.sitepoint.com/build-javascript-countdown-timer-no-dependencies/
   function getTimeRemaining(endtime) {
     var t = Date.parse(endtime) - Date.parse(new Date());
     var seconds = Math.floor((t / 1000) % 60);
@@ -49,11 +52,13 @@ $(document).ready(function() {
         ion.sound.play("secondsOut");
       }
     }
-
+    
     updateClock();
+    // Window Timer repeatably calls updateClock function, with a 1 second delay between each call.
     timeinterval = setInterval(updateClock, 1000);
   }
-
+  // End modified countdown timer code snippet
+  
   /// timer click event handler
   $(".timer-button").click(function() {
 
@@ -100,9 +105,6 @@ $(document).ready(function() {
     }
   });
 
-  // $(".plus-button").click(function() {
-  //   incrementMinutes();
-  // });
 
   $(".plus-button").hover(
     function() { //  mouse-in
@@ -114,20 +116,6 @@ $(document).ready(function() {
       clearInterval(repeatIntervalID);
     });
 
-//     $(".plus-button").mousedown(function() {
-//       repeatIntervalID = setInterval(function() {
-//         incrementMinutes();
-//       }, plusMinusRepeat);
-//     });
-
-//     $(".plus-button").mouseup(function() {
-//       clearInterval(repeatIntervalID);
-//     });
-
-  // $(".minus-button").click(function() {
-  //   decrementMinutes();
-  // });
-
   $(".minus-button").hover(
     function() { //  mouse-in
       repeatIntervalID = setInterval(function() {
@@ -138,15 +126,6 @@ $(document).ready(function() {
       clearInterval(repeatIntervalID);
     });
 
-//     $(".minus-button").mousedown(function() {
-//       repeatIntervalID = setInterval(function() {
-//         decrementMinutes();
-//       }, plusMinusRepeat);
-//     });
-
-//     $(".minus-button").mouseup(function() {
-//       clearInterval(repeatIntervalID);
-//     });
 
   function incrementMinutes() {
     var minsVal = parseInt($(".minutes").text(), 10);
