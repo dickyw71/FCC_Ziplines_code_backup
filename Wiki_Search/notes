@@ -1,0 +1,21 @@
+Wiki Search project
+
+User Story: I can search Wikipedia entries in a search box and see the resulting Wikipedia entries.
+User Story: I can click a button to see a random Wikipedia entry.
+
+Hint #1: Here's a URL you can use to get a random Wikipedia article: http://en.wikipedia.org/wiki/Special:Random.
+Hint #2: Here's an entry on using Wikipedia's API: http://www.mediawiki.org/wiki/API:Main_page.
+Hint #3: Use this link to experiment with Wikipedia's API: https://en.wikipedia.org/wiki/Special:ApiSandbox#action=query&titles=Main%20Page&prop=revisions&rvprop=content&format=jsonfm
+
+
+The search text shall be processed to form the WikiMedia API call.
+
+The search results, returned by the WikiMedia API, should be shown with a title and short text description.
+The title should be a hyperlink to the Wikipedia entry which opens in a new browser tab.
+The results list is cleared when a new search is made or when the search field is cleared.
+
+https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&titles=&srsearch=samuel+pepys
+
+/w/api.php?action=query&format=json&prop=&list=search&meta=&titles=&srsearch=samuel+pepys&srnamespace=0&srwhat=text&srinfo=totalhits%7Csuggestion%7Crewrittenquery
+
+/w/api.php?action=query&format=json&prop=extracts&titles=Samuel+Pepys%7CThe+Private+Life+of+Samuel+Pepys%7CSaye&exlimit=10&exintro=1&explaintext=1
