@@ -1,0 +1,28 @@
+html {
+  background-color: #000;
+  margin: auto;
+}
+
+.page-header {
+  background-color: #CCC;
+  text-align: center;
+}
+
+h1 {
+  color: #FFF;
+  text-align: center;
+}
+
+.media {
+  margin: 10px;  
+}
+
+.media-object {
+  width: 160px;
+  height: 100px;
+  border: thick dashed #898A6F;
+}
+
+.media-status {
+  color: #A4DE87;
+}
