@@ -1,49 +1,42 @@
 $(document).ready(function() {
 
-  // get the Twitch.TV stream status of Free Code Camp
-//  $.getJSON('https://api.twitch.tv/kraken/streams/lirik?callback?', function(data) 
-          $.getJSON('https://api.twitch.tv/kraken/streams/freecodecamp?callback?', function(data) 
-                                                                                                      {
-    if (data.stream) {
-      // Free Code Camp is streaming on Twitch.TV
-      // Show FCC stream preview image
-      $('.media-object').attr('src', data.stream.preview.large)
-      $('a').attr({
-        href: data.stream.channel.url,
-        target: '_blank'
-      })  
-      $('.media-object').css('border', 'thick solid #85D94D')
-      $('.media-heading').text(data.stream.channel.display_name)
-      $('.media-desc').text(data.stream.channel.status)
-      $('.media-status').text('ONLINE')
-      $('a').attr({
-          href: channel.url,
-          target: '_blank'      
-      })
-    } 
-    else {
-      // Free Code Camp Twitch.TV channel is Offline
-      $.getJSON(data._links.channel, function(channel) {
-        if (channel.video_banner) {
-          // Show the offline video banner image
-          $('.media-object').attr('src', channel.video_banner)
-        } else {
-          // Or show the Free Code Camp Channel Logo
-          $('.media-object').attr({
-            src: channel.logo,
-            alt: 'Open on Twitch.TV'
-          })
-        }
-        $('.media-heading').text(channel.display_name)
-        $('.media-desc').text('')
-        $('.media-status').text('OFFLINE')
-        $('.media-status').css('color', '#898A6F')
-        $('a').attr({
-          href: channel.url,
-          target: '_blank'      
-        })
-      })
-    }
+  var users = ["ESL_SC2", "OgamingSC2", "freecodecamp", "brianamarie132", "storbeck", "terakilobyte", "habathcx", "RobotCaleb", "thomasballinger", "noobs2ninjas", "beohoff", "brunofin", "comster404"];
 
-  })
+  // Display the Twitch.TV stream status for each user
+  for (var i = 0; i < users.length; i++) {
+    showStatus(users[i]);
+  }
+
 })
+
+function showStatus(username) {
+
+  $.getJSON('https://api.twitch.tv/kraken/streams/' + username + '?callback?', function(data) {
+    if (data.stream) {
+      $('.media-list').append(
+        '<li class="media online"><div class="media-left"><a href="' + data.stream.channel.url +
+        '" target="_blank"><img class="media-object" src="' + data.stream.channel.logo +
+        '" alt="?"></a></div><div class="media-body"><a href="' + data.stream.channel.url +
+        '" target="_blank"><p class="media-heading">' + data.stream.channel.display_name +
+        '</p></a><p class="media-status">' + data.stream.channel.status +
+        '</p></li>');
+    } else {
+      $.getJSON(data._links.channel, function(channel) {
+        if(channel.logo == null) {
+          channel.logo = 'http://placehold.it/75?text=?';
+        }
+        $('.media-list').append(
+          '<li class="media offline"><div class="media-left"><a href="' + channel.url +
+          '" target="_blank"><img class="media-object" src="' + channel.logo +
+          '" alt="?"></a></div><div class="media-body"><a href="' + channel.url +
+          '" target="_blank"><p class="media-heading">' + channel.display_name +
+          '</p></a><p class="media-status"><em>Offline</em></p></li>');
+      });
+    }
+  }).fail(function() {
+    console.log("error");
+    $('.media-list').append(
+      '<li class="media offline"><div class="media-left"><img class="media-object" src="http://placehold.it/75?text=?" alt="?"></div><div class="media-body"><p class="media-heading">' + username +
+      '</p></a><p class="media-status"><em>Account closed</em></p></li>');
+  });
+}
