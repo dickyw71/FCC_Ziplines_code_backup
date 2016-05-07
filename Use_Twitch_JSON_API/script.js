@@ -1,13 +1,27 @@
 $(document).ready(function() {
 
-  var users = ["ESL_SC2", "OgamingSC2", "freecodecamp", "brianamarie132", "storbeck", "terakilobyte", "habathcx", "RobotCaleb", "thomasballinger", "noobs2ninjas", "beohoff", "brunofin", "comster404"];
+  var users = ["ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp", "brianamarie132", "storbeck", "terakilobyte", "habathcx", "RobotCaleb", "thomasballinger", "noobs2ninjas", "beohoff", "brunofin", "comster404"];
 
   // Display the Twitch.TV stream status for each user
   for (var i = 0; i < users.length; i++) {
     showStatus(users[i]);
   }
+  
+  $('#all').click(function() {
+    $('.online').show();
+    $('.offline').show();
+  });
+  
+  $("#on").click(function() {
+      $('.offline').hide();
+      $('.online').show();
+  });
 
-})
+  $("#off").click(function() {
+      $('.online').hide();
+      $('.offline').show();
+  });
+});
 
 function showStatus(username) {
 
@@ -34,7 +48,6 @@ function showStatus(username) {
       });
     }
   }).fail(function() {
-    console.log("error");
     $('.media-list').append(
       '<li class="media offline"><div class="media-left"><img class="media-object" src="http://placehold.it/75?text=?" alt="?"></div><div class="media-body"><p class="media-heading">' + username +
       '</p></a><p class="media-status"><em>Account closed</em></p></li>');
