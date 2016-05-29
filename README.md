@@ -1,2 +1,2 @@
-# FCC_Ziplines_code_backup
-Repo to backup my work on FCC Zipline projects
+# FCC_Frontend_Project_code_backup
+Repo to backup my work on FCC Frontend projects
