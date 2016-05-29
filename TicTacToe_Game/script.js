@@ -29,37 +29,37 @@ $(document).ready(function() {
     if (x <= this.width / 3) {
       if (y <= this.height / 3) {
         ticTacToe.setPosition(52, 52);
-        ticTacToe.setGridLocation(0,0);
+        ticTacToe.setGridLocation(0, 0);
       } else if ((this.height / 3 < y) && (y <= (this.height / 3) * 2)) {
         ticTacToe.setPosition(52, 152);
-        ticTacToe.setGridLocation(1,0);
+        ticTacToe.setGridLocation(1, 0);
       } else if ((((this.height / 3) * 2) < y) && (y < this.height)) {
         ticTacToe.setPosition(52, 252);
-        ticTacToe.setGridLocation(2,0);
+        ticTacToe.setGridLocation(2, 0);
       }
     }
     if ((this.width / 3 < x) && (x <= (this.width / 3) * 2)) {
       if (y <= this.height / 3) {
         ticTacToe.setPosition(152, 52);
-        ticTacToe.setGridLocation(0,1);
+        ticTacToe.setGridLocation(0, 1);
       } else if ((this.height / 3 < y) && (y <= (this.height / 3) * 2)) {
         ticTacToe.setPosition(152, 152);
-        ticTacToe.setGridLocation(1,1);
+        ticTacToe.setGridLocation(1, 1);
       } else if ((((this.height / 3) * 2) < y) && (y < this.height)) {
         ticTacToe.setPosition(152, 252);
-        ticTacToe.setGridLocation(2,1);
+        ticTacToe.setGridLocation(2, 1);
       }
     }
     if ((((this.width / 3) * 2) < x) && (x <= this.width)) {
       if (y <= this.height / 3) {
         ticTacToe.setPosition(252, 52);
-        ticTacToe.setGridLocation(0,2);
+        ticTacToe.setGridLocation(0, 2);
       } else if ((this.height / 3 < y) && (y <= (this.height / 3) * 2)) {
         ticTacToe.setPosition(252, 152);
-        ticTacToe.setGridLocation(1,2);
+        ticTacToe.setGridLocation(1, 2);
       } else if ((((this.height / 3) * 2) < y) && (y < this.height)) {
         ticTacToe.setPosition(252, 252);
-        ticTacToe.setGridLocation(2,2);
+        ticTacToe.setGridLocation(2, 2);
       }
     }
     ticTacToe.takeTurn();
@@ -68,11 +68,11 @@ $(document).ready(function() {
 });
 
 function clearGame() {
-    for (var i=0; i<3; i++) {
-      for (var j=0; j<3; j++) {
-        ticTacToe.game[i][j] = '';
-      }
+  for (var i = 0; i < 3; i++) {
+    for (var j = 0; j < 3; j++) {
+      ticTacToe.game[i][j] = '';
     }
+  }
 }
 
 function drawGrid() {
@@ -118,8 +118,8 @@ var ticTacToe = {
   "computerPlaysXs": true,
   "x": 0,
   "y": 0,
-  "row":0,
-  "col":0,
+  "row": 0,
+  "col": 0,
   "side": 'X',
   "grid": [
     [0, 1, 2],
@@ -143,7 +143,7 @@ var ticTacToe = {
   ],
   "gameOver": false,
   "timerId": null,
-  
+
   "setPosition": function(x, y) {
     this.x = x;
     this.y = y;
@@ -160,16 +160,15 @@ var ticTacToe = {
       // is valid board position and is a free position in this game
       if (this.game[this.row][this.col] === '') {
         this.game[this.row][this.col] = this.side;
+        if (this.side === 'X') {
+          drawCross(this.x, this.y);
+          this.side = 'O';
+        } else {
+          drawCircle(this.x, this.y);
+          this.side = 'X';
+        }
       }
     }
-    if(this.side === 'X') {
-      drawCross(this.x, this.y);
-      this.side = 'O';
-    }
-    else {
-      drawCircle(this.x, this.y);
-      this.side = 'X';
-    }  
   },
   "checkForGameOver": function() {
     // Either all squares are filled
