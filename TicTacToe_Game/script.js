@@ -101,7 +101,7 @@ function chooseMove() {
   var freeSquare = ticTacToe.grid.find(square => square.value === '');
   console.log(freeSquare);
   ticTacToe.setPosition(freeSquare.coords[0], freeSquare.coords[1]);
-  ticTacToe.setGridLocation(freeSquare.pos[0], freeSquare.pos[1]); 
+  ticTacToe.setGridLocation(freeSquare.row, freeSquare.col); 
   window.clearTimeout(timerId);
   console.log('Row: ' + ticTacToe.row);
   console.log('Column: ' + ticTacToe.col);
@@ -163,15 +163,15 @@ var ticTacToe = {
   "row": 0,
   "col": 0,
   "side": 'X',
-  "grid": [{num:'0', row:'0', col:'0', pos:[0,0], coords:[52,52], score:'3', value:''}, 
-           {num:'1', row:'0', col:'1', pos:[0,1], coords:[152,52], score:'2', value:''}, 
-           {num:'2', row:'0', col:'2', pos:[0,2], coords:[252,52], score:'3', value:''},
-           {num:'3', row:'1', col:'0', pos:[1,0], coords:[52,152], score:'2', value:''}, 
-           {num:'4', row:'1', col:'1', pos:[1,1], coords:[152,152], score:'4', value:''}, 
-           {num:'5', row:'1', col:'2', pos:[1,2], coords:[252,152], score:'2', value:''},
-           {num:'6', row:'2', col:'0', pos:[2,0], coords:[52,252], score:'3', value:''}, 
-           {num:'7', row:'2', col:'1', pos:[2,1], coords:[152,252], score:'2', value:''}, 
-           {num:'8', row:'2', col:'2', pos:[2,2], coords:[252,252], score:'3', value:''}],
+  "grid": [{num:'0', row: 0, col: 0, xcoord: 52, ycoord: 52, score:'3', value:''}, 
+           {num:'1', row: 0, col: 1, xcoord: 152, ycoord: 52, score:'2', value:''}, 
+           {num:'2', row: 0, col: 2, xcoord: 252, ycoord: 52, score:'3', value:''},
+           {num:'3', row: 1, col: 0, xcoord: 52, ycoord: 152, score:'2', value:''}, 
+           {num:'4', row: 1, col: 1, xcoord: 152, ycoord: 152, score:'4', value:''}, 
+           {num:'5', row: 1, col: 2, xcoord: 252, ycoord: 152, score:'2', value:''},
+           {num:'6', row: 2, col: 0, xcoord: 52, ycoord: 252, score:'3', value:''}, 
+           {num:'7', row: 2, col: 1, xcoord: 152, ycoord: 252, score:'2', value:''}, 
+           {num:'8', row: 2, col: 2, xcoord: 252, ycoord: 252, score:'3', value:''}],
   "winningLines": [
     ['0', '1', '2'],
     ['3', '4', '5'],
