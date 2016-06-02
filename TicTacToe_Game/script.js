@@ -66,9 +66,9 @@ $(document).ready(function() {
     }
     ticTacToe.takeTurn();
     ticTacToe.checkForGameOver();
-    
+
     // Computers turn
-     timerId = window.setTimeout(chooseMove, 500);
+    timerId = window.setTimeout(chooseMove, 500);
   });
 });
 
@@ -78,19 +78,21 @@ function clearGame() {
       ticTacToe.game[i][j] = '';
     }
   }
+  // clear the value of all squares in the grid
+  ticTacToe.grid.forEach(curr => curr.value = '');
+  console.log("clear grid: " + ticTacToe.grid);
 }
 
 function startGame() {
   // User or Computer goes first?
   // Computer starts 
-  if(ticTacToe.computersTurn) {
+  if (ticTacToe.computersTurn) {
     ticTacToe.computersTurn = false;
-    var space = ticTacToe.grid.find(square => square.num === '4' );
-    ticTacToe.setPosition(space.coords[0], space.coords[1]);
+    var space = ticTacToe.grid.find(square => square.num === '4');
+    ticTacToe.setPosition(space.xcoord, space.ycoord);
     ticTacToe.setGridLocation(space.row, space.col)
     ticTacToe.takeTurn();
-  }
-  else {
+  } else {
     ticTacToe.computersTurn = true;
   }
 }
@@ -99,13 +101,17 @@ function chooseMove() {
   console.log('in chooseMove');
   // choose free square with best probability of making a winning line 
   var freeSquare = ticTacToe.grid.find(square => square.value === '');
-  console.log(freeSquare);
-  ticTacToe.setPosition(freeSquare.coords[0], freeSquare.coords[1]);
-  ticTacToe.setGridLocation(freeSquare.row, freeSquare.col); 
-  window.clearTimeout(timerId);
-  console.log('Row: ' + ticTacToe.row);
-  console.log('Column: ' + ticTacToe.col);
-  ticTacToe.takeTurn();
+  if (freeSquare) {
+    console.log(freeSquare);
+    ticTacToe.setPosition(freeSquare.xcoord, freeSquare.ycoord);
+    ticTacToe.setGridLocation(freeSquare.row, freeSquare.col);
+    window.clearTimeout(timerId);
+    console.log('Row: ' + ticTacToe.row);
+    console.log('Column: ' + ticTacToe.col);
+    ticTacToe.takeTurn();
+  } else {
+    console.log("no free squares left");
+  }
 }
 
 function isPositionFree(square) {
@@ -113,8 +119,6 @@ function isPositionFree(square) {
   // getRow(square) getColumn(square)
   //ticTacToe.grid.find(square => ) 
 }
-
-
 
 function drawGrid() {
   var canvas = document.getElementById('game');
@@ -163,15 +167,79 @@ var ticTacToe = {
   "row": 0,
   "col": 0,
   "side": 'X',
-  "grid": [{num:'0', row: 0, col: 0, xcoord: 52, ycoord: 52, score:'3', value:''}, 
-           {num:'1', row: 0, col: 1, xcoord: 152, ycoord: 52, score:'2', value:''}, 
-           {num:'2', row: 0, col: 2, xcoord: 252, ycoord: 52, score:'3', value:''},
-           {num:'3', row: 1, col: 0, xcoord: 52, ycoord: 152, score:'2', value:''}, 
-           {num:'4', row: 1, col: 1, xcoord: 152, ycoord: 152, score:'4', value:''}, 
-           {num:'5', row: 1, col: 2, xcoord: 252, ycoord: 152, score:'2', value:''},
-           {num:'6', row: 2, col: 0, xcoord: 52, ycoord: 252, score:'3', value:''}, 
-           {num:'7', row: 2, col: 1, xcoord: 152, ycoord: 252, score:'2', value:''}, 
-           {num:'8', row: 2, col: 2, xcoord: 252, ycoord: 252, score:'3', value:''}],
+  "grid": [{
+    num: '0',
+    row: 0,
+    col: 0,
+    xcoord: 52,
+    ycoord: 52,
+    score: '3',
+    value: ''
+  }, {
+    num: '1',
+    row: 0,
+    col: 1,
+    xcoord: 152,
+    ycoord: 52,
+    score: '2',
+    value: ''
+  }, {
+    num: '2',
+    row: 0,
+    col: 2,
+    xcoord: 252,
+    ycoord: 52,
+    score: '3',
+    value: ''
+  }, {
+    num: '3',
+    row: 1,
+    col: 0,
+    xcoord: 52,
+    ycoord: 152,
+    score: '2',
+    value: ''
+  }, {
+    num: '4',
+    row: 1,
+    col: 1,
+    xcoord: 152,
+    ycoord: 152,
+    score: '4',
+    value: ''
+  }, {
+    num: '5',
+    row: 1,
+    col: 2,
+    xcoord: 252,
+    ycoord: 152,
+    score: '2',
+    value: ''
+  }, {
+    num: '6',
+    row: 2,
+    col: 0,
+    xcoord: 52,
+    ycoord: 252,
+    score: '3',
+    value: ''
+  }, {
+    num: '7',
+    row: 2,
+    col: 1,
+    xcoord: 152,
+    ycoord: 252,
+    score: '2',
+    value: ''
+  }, {
+    num: '8',
+    row: 2,
+    col: 2,
+    xcoord: 252,
+    ycoord: 252,
+    score: '3',
+    value: ''
+  }],
   "winningLines": [
     ['0', '1', '2'],
     ['3', '4', '5'],
@@ -200,13 +268,10 @@ var ticTacToe = {
     this.col = col;
   },
   "setGridValue": function() {
-    console.log('set Grid Value Row: ' + this.row);
-    console.log('set Grid Value Column: ' + this.col);
     var gridSquare = this.grid.find(square => ((square.row === this.row) && (square.col === this.col)))
     if (gridSquare) {
       gridSquare.value = this.side;
-    }
-    else {
+    } else {
       console.log('square not found');
     }
   },
@@ -228,8 +293,7 @@ var ticTacToe = {
           this.side = 'X';
         }
         console.log(this.grid);
-      }
-      else {
+      } else {
         console.log('square is taken');
       }
     }
