@@ -4,24 +4,27 @@ $(document).ready(function() {
   drawGrid();
 
   $('ul').click(function() {
-    $('p').slideUp();
-    $('li').show();
+    if (!ticTacToe.playing) {
+      $('p').slideUp();
+      $('li').show();
+    }
   });
 
   // choose X or O
   $('li').click(function() {
-    // get li id
-    if ($(this).is('#O')) {
-      // User Plays O's (naughts)
-      console.log('User chose O');
-    } else {
-      ticTacToe.computerPlaysXs = false;
-      console.log('User chose X');
-    }
-    $('li').slideUp();
-    $('#game').show();
-    // start game
-    startGame();
+      // get li id
+      if ($(this).is('#O')) {
+        // User Plays O's (naughts)
+        console.log('User chose O');
+      } else {
+        ticTacToe.computerPlaysXs = false;
+        ticTacToe.computersTurn = false;
+        console.log('User chose X');
+      }
+      $('li').slideUp();
+      $('#game').show();
+      // start game
+      startGame();
   });
 
   $('#game').click(function(event) {
@@ -84,6 +87,7 @@ function clearGame() {
 }
 
 function startGame() {
+  ticTacToe.playing = true;
   // User or Computer goes first?
   // Computer starts 
   if (ticTacToe.computersTurn) {
@@ -100,7 +104,15 @@ function startGame() {
 function chooseMove() {
   console.log('in chooseMove');
   // choose free square with best probability of making a winning line 
-  var freeSquare = ticTacToe.grid.find(square => square.value === '');
+  var freeSquare = null;
+  if (computerPlaysX)
+    var xSquares = ticTacToe.grid.filter(square => (square.value === '') || (square.value === 'X'));
+  //freeSquare = xSquares
+  else {
+    var oSquares = ticTacToe.grid.filter(square => (square.value === '') || (square.value === '0'));
+  }
+
+  // find a square that will make a winning line
   if (freeSquare) {
     console.log(freeSquare);
     ticTacToe.setPosition(freeSquare.xcoord, freeSquare.ycoord);
@@ -109,6 +121,7 @@ function chooseMove() {
     console.log('Row: ' + ticTacToe.row);
     console.log('Column: ' + ticTacToe.col);
     ticTacToe.takeTurn();
+    ticTacToe.checkForGameOver();
   } else {
     console.log("no free squares left");
   }
@@ -173,7 +186,7 @@ var ticTacToe = {
     col: 0,
     xcoord: 52,
     ycoord: 52,
-    score: '3',
+    score: 3,
     value: ''
   }, {
     num: '1',
@@ -181,7 +194,7 @@ var ticTacToe = {
     col: 1,
     xcoord: 152,
     ycoord: 52,
-    score: '2',
+    score: 2,
     value: ''
   }, {
     num: '2',
@@ -189,7 +202,7 @@ var ticTacToe = {
     col: 2,
     xcoord: 252,
     ycoord: 52,
-    score: '3',
+    score: 3,
     value: ''
   }, {
     num: '3',
@@ -197,7 +210,7 @@ var ticTacToe = {
     col: 0,
     xcoord: 52,
     ycoord: 152,
-    score: '2',
+    score: 2,
     value: ''
   }, {
     num: '4',
@@ -205,7 +218,7 @@ var ticTacToe = {
     col: 1,
     xcoord: 152,
     ycoord: 152,
-    score: '4',
+    score: 4,
     value: ''
   }, {
     num: '5',
@@ -213,7 +226,7 @@ var ticTacToe = {
     col: 2,
     xcoord: 252,
     ycoord: 152,
-    score: '2',
+    score: 2,
     value: ''
   }, {
     num: '6',
@@ -221,7 +234,7 @@ var ticTacToe = {
     col: 0,
     xcoord: 52,
     ycoord: 252,
-    score: '3',
+    score: 3,
     value: ''
   }, {
     num: '7',
@@ -229,7 +242,7 @@ var ticTacToe = {
     col: 1,
     xcoord: 152,
     ycoord: 252,
-    score: '2',
+    score: 2,
     value: ''
   }, {
     num: '8',
@@ -237,7 +250,7 @@ var ticTacToe = {
     col: 2,
     xcoord: 252,
     ycoord: 252,
-    score: '3',
+    score: 3,
     value: ''
   }],
   "winningLines": [
@@ -256,7 +269,7 @@ var ticTacToe = {
     ['', '', ''],
     ['', '', '']
   ],
-  "gameOver": false,
+  "playing": false,
   "timerId": null,
 
   "setPosition": function(x, y) {
@@ -316,6 +329,7 @@ var ticTacToe = {
 
   },
   "resetGame": function() {
+    playing = false;
     drawGrid();
     clearGame();
     window.clearTimeout(timerId);
