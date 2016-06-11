@@ -84,6 +84,8 @@ function clearGame() {
   // clear the value of all squares in the grid
   ticTacToe.grid.forEach(curr => curr.value = '');
   console.log("clear grid: " + ticTacToe.grid);
+  // restart game
+  startGame();
 }
 
 function startGame() {
@@ -101,17 +103,72 @@ function startGame() {
   }
 }
 
-function chooseMove() {
-  console.log('in chooseMove');
-  // choose free square with best probability of making a winning line 
-  var freeSquare = null;
-  if (computerPlaysX)
-    var xSquares = ticTacToe.grid.filter(square => (square.value === '') || (square.value === 'X'));
-  //freeSquare = xSquares
-  else {
-    var oSquares = ticTacToe.grid.filter(square => (square.value === '') || (square.value === '0'));
-  }
+function tallyLine(winLine, gridVal) {
+  let tally = {}
+  winLine.forEach(number => {
+    if (!tally.hasOwnProperty(gridVal[number])) tally[gridVal[number]] = 1
+    else tally[gridVal[number]] += 1
+  })
+  return tally
+}
 
+function nextMove(winLine, gridVal, player) {
+  let tally = tallyLine(winLine, gridVal)
+  if(tally[player] === 1  && tally[''] === 2 ) {
+    return winLine.find(number => gridVal[number] === '')
+  }
+}
+
+function checkWinningLine(winLine, gridVal, player) {
+  let tally = tallyLine(winLine, gridVal)
+  if (tally[player] === 2 && tally[''] === 1) {
+    return winLine.find(number => gridVal[number] === '')
+  } 
+}
+
+function bestMove(winLines, grid, player) {
+  console.log(player)
+  // Make a line or block opponents line
+  const gridValues = grid.map(obj => obj.value)
+  let winningMove = null
+  let blockingMove = null
+    // check for winning move
+  winLines.find(winLine => {
+    winningMove = checkWinningLine(winLine, gridValues, player)
+  })
+    // block opponents winning move
+  winLines.find(winLine => {
+    let opponent = (player === 'X' ? 'O' : 'X')
+    blockingMove = checkWinningLine(winLine, gridValues, opponent)
+  })
+
+    // find next move
+    let move = null
+      winLines.find(winLine => {
+        move = nextMove(winLine, gridValues, player)
+      })
+      
+  console.log('Winning move:', winningMove)
+  console.log('Blocking move:', blockingMove)
+  console.log('Next move:', move)
+  
+  if(winningMove)
+    return winningMove
+  if(blockingMove)
+    return blockingMove
+  if(move)
+    return move
+  else
+    return null
+}
+
+function chooseMove() {
+
+  let num = bestMove(ticTacToe.winningLines, 
+                     ticTacToe.grid, 
+                     ticTacToe.side)
+  var freeSquare = ticTacToe.grid.find(square => square.num === num);
+  
   // find a square that will make a winning line
   if (freeSquare) {
     console.log(freeSquare);
