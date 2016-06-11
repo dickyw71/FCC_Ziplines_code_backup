@@ -16,23 +16,23 @@ var grid = [{
 }, {
   num: '1',
   rank: 2,
-  value: 'X'
+  value: ''
 }, {
   num: '2',
   rank: 3,
-  value: 'X'
+  value: ''
 }, {
   num: '3',
   rank: 2,
-  value: 'O'
+  value: ''
 }, {
   num: '4',
   rank: 4,
-  value: 'O'
+  value: ''
 }, {
   num: '5',
   rank: 2,
-  value: ''
+  value: 'X'
 }, {
   num: '6',
   rank: 3,
@@ -40,11 +40,11 @@ var grid = [{
 }, {
   num: '7',
   rank: 2,
-  value: ''
+  value: 'O'
 }, {
   num: '8',
   rank: 3,
-  value: ''
+  value: 'O'
 }]
 
 // console.log(winningLines.filter(array => array.find(ele => ele === '3')))
@@ -52,12 +52,25 @@ var grid = [{
 // // filter highest ranked empty square
 // console.log(grid.filter(obj => obj.value === '' && obj.rank >= 3))
 
-function checkWinningLine(winLine, gridVal, player) {
+function tallyLine(winLine, gridVal) {
   let tally = {}
   winLine.forEach(number => {
     if (!tally.hasOwnProperty(gridVal[number])) tally[gridVal[number]] = 1
     else tally[gridVal[number]] += 1
   })
+  return tally
+}
+
+function nextMove(winLine, gridVal, player) {
+  if(tallyLine(winLine, gridVal)[player] === 1 
+     && tallyLine(winLine, gridVal)[''] === 2 ) {
+    return winLine.find(number => gridVal[number] === '')
+  }
+}
+
+function checkWinningLine(winLine, gridVal, player) {
+  let tally = tallyLine(winLine, gridVal)
+
   console.log(player, winLine, JSON.stringify(tally))
   if (tally[player] === 2 && tally[''] === 1) {
     let num = null
@@ -88,19 +101,19 @@ function bestMove(winLines, grid, player) {
   winLines.find(winLine => {
     return winningMove = checkWinningLine(winLine, gridValues, player)
   })
-
-  // block opponents winning move
+    // block opponents winning move
   winLines.find(winLine => {
     let opponent = (player === 'X' ? 'O' : 'X')
     return blockingMove = checkWinningLine(winLine, gridValues, opponent)
   })
 
+    // find next move
+    let move = null
+      winLines.find(winLine => {
+      return move = nextMove(winLine, gridValues, player)
+      })
+      
   console.log('Winning move:', winningMove)
   console.log('Blocking move:', blockingMove)
-}
-
-function blockOpponentMove(winLine, gridVal, player) {
-
-  // checkWinningLine for opponent
-  // then make blocking move
+  console.log('Next move:', move)
 }
