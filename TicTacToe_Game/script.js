@@ -79,11 +79,6 @@ $(document).ready(function() {
 });
 
 function clearGame() {
-  for (var i = 0; i < 3; i++) {
-    for (var j = 0; j < 3; j++) {
-      ticTacToe.game[i][j] = '';
-    }
-  }
   // clear the value of all squares in the grid
   ticTacToe.grid.forEach(curr => curr.value = '');
   console.log("clear grid: " + ticTacToe.grid);
@@ -114,13 +109,13 @@ function tallyLine(winLine, gridVal) {
 
 function nextMove(winLine, gridVal, player) {
   let tally = tallyLine(winLine, gridVal)
-  if(tally[player] === 1  && tally[''] === 2 ) {
+  if((tally[player] === 1  && tally[''] === 2 ) || (tally[''] === 3) || (tally[''] === 1)) {
     console.log(winLine, gridVal, tally)
     return winLine.find(number => gridVal[number] === '')
   }
 }
 
-function checkWinningLine(winLine, gridVal, player) {
+function checkForWinningMove(winLine, gridVal, player) {
   let tally = tallyLine(winLine, gridVal)
   if (tally[player] === 2 && tally[''] === 1) {
     console.log(winLine, gridVal, tally)
@@ -132,24 +127,23 @@ function bestMove(winLines, grid, player) {
   console.log(player)
   // Make a line or block opponents line
   const gridValues = grid.map(obj => obj.value)
-   console.log(gridValues)
   let winningMove = null
   let blockingMove = null
     // check for winning move
   winLines.find(winLine => {
-    return winningMove = checkWinningLine(winLine, gridValues, player)
+    return winningMove = checkForWinningMove(winLine, gridValues, player)
   })
     // block opponents winning move
   winLines.find(winLine => {
     let opponent = (player === 'X' ? 'O' : 'X')
-    return blockingMove = checkWinningLine(winLine, gridValues, opponent)
+    return blockingMove = checkForWinningMove(winLine, gridValues, opponent)
   })
 
-    // find next move
-    let move = null
-      winLines.find(winLine => {
-        return move = nextMove(winLine, gridValues, player)
-      })
+  // find next move
+  let move = null
+    winLines.find(winLine => {
+      return move = nextMove(winLine, gridValues, player)
+    })
       
   console.log('Winning move:', winningMove)
   console.log('Blocking move:', blockingMove)
@@ -175,7 +169,6 @@ function chooseMove() {
   
   // find a square that will make a winning line
   if (freeSquare) {
-    console.log(freeSquare);
     window.clearTimeout(timerId);
     ticTacToe.takeTurn(freeSquare.row, freeSquare.col);
     ticTacToe.checkForGameOver();
@@ -228,13 +221,19 @@ function drawCrossAtPoint(x, y) {
   ctx.stroke();
 }
 
+function hasWinningLine() {
+  const gridValues = ticTacToe.grid.map(obj => obj.value)
+  console.log(gridValues)
+  return ticTacToe.winningLines.find(winLine => {
+    let tally = tallyLine(winLine, gridValues)
+    if(tally['X'] === 3)
+      return true
+  })    
+}
+
 var ticTacToe = {
   "computerPlaysXs": true,
   "computersTurn": true,
-  "x": 0,
-  "y": 0,
-  "row": 0,
-  "col": 0,
   "side": 'X',
   "grid": [{
     num: 0,
@@ -310,40 +309,17 @@ var ticTacToe = {
     value: ''
   }],
   "winningLines": [
-    ['0', '1', '2'],
-    ['3', '4', '5'],
-    ['6', '7', '8'],
-    ['0', '3', '6'],
-    ['1', '4', '7'],
-    ['2', '5', '8'],
-    ['0', '4', '8'],
-    ['2', '4', '6']
-  ],
-  // "preferredSquares": [ {4:[4]}, {3:[0,2,6,8]}, {2:[1,3,5,7]} ], 
-  "game": [
-    ['', '', ''],
-    ['', '', ''],
-    ['', '', '']
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6]
   ],
   "playing": false,
   "timerId": null,
-
-  "setPosition": function(x, y) {
-    this.x = x;
-    this.y = y;
-  },
-  "setGridLocation": function(row, col) {
-    this.row = row;
-    this.col = col;
-  },
-  "setGridValue": function() {
-    var gridSquare = this.grid.find(square => ((square.row === this.row) && (square.col === this.col)))
-    if (gridSquare) {
-      gridSquare.value = this.side;
-    } else {
-      console.log('square not found');
-    }
-  }, 
   "takeTurn": function(row, col) {
     //  where position is a free space on the game board
     let square = this.grid.find(x => (x.row === row && x.col === col))
@@ -364,29 +340,17 @@ var ticTacToe = {
   },
   "checkForGameOver": function() {
     // Either all squares are filled
-    var hasBlankSquare = this.grid.some(a => a.value === '');
-    if (hasBlankSquare === false) {
-      console.log('Game Over');
+    var hasBlankSquare = this.grid.some(a => a.value === '')
+    if (!hasBlankSquare || hasWinningLine())  {
+      console.log('Game Over')
       // reset game grid
-      timerId = window.setTimeout(this.resetGame, 1500);
+      timerId = window.setTimeout(this.resetGame, 1500)
     }
-    // OR there is a winning line
-    else {
-
-    }
-  },
-  "checkForAWinner": function() {
-
-  },
-
-  "hasWinningLine": function() {
-
   },
   "resetGame": function() {
-    playing = false;
-    drawGameGrid();
-    clearGame();
-    window.clearTimeout(timerId);
+    playing = false
+    drawGameGrid()
+    clearGame()
+    window.clearTimeout(timerId)
   }
-
-};
+}
