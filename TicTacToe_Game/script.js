@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
-  // start game
-  drawGrid();
+  // draw the game grid
+  drawGameGrid();
 
   $('ul').click(function() {
     if (!ticTacToe.playing) {
@@ -30,44 +30,47 @@ $(document).ready(function() {
   $('#game').click(function(event) {
     const x = event.offsetX;
     const y = event.offsetY;
+    let row = null
+    let col = null
     // Find the game square
     if (x <= this.width / 3) {
       if (y <= this.height / 3) {
-        ticTacToe.setPosition(52, 52);
-        ticTacToe.setGridLocation(0, 0);
-      } else if ((this.height / 3 < y) && (y <= (this.height / 3) * 2)) {
-        ticTacToe.setPosition(52, 152);
-        ticTacToe.setGridLocation(1, 0);
+        row = 0
+        col = 0
+     } else if ((this.height / 3 < y) && (y <= (this.height / 3) * 2)) {
+        row = 1
+        col = 0
       } else if ((((this.height / 3) * 2) < y) && (y < this.height)) {
-        ticTacToe.setPosition(52, 252);
-        ticTacToe.setGridLocation(2, 0);
+        row = 2
+        col = 0
       }
     }
     if ((this.width / 3 < x) && (x <= (this.width / 3) * 2)) {
       if (y <= this.height / 3) {
-        ticTacToe.setPosition(152, 52);
-        ticTacToe.setGridLocation(0, 1);
+        row = 0
+        col = 1
       } else if ((this.height / 3 < y) && (y <= (this.height / 3) * 2)) {
-        ticTacToe.setPosition(152, 152);
-        ticTacToe.setGridLocation(1, 1);
-      } else if ((((this.height / 3) * 2) < y) && (y < this.height)) {
-        ticTacToe.setPosition(152, 252);
-        ticTacToe.setGridLocation(2, 1);
+        row = 1
+        col = 1
+       } else if ((((this.height / 3) * 2) < y) && (y < this.height)) {
+        row = 2
+        col = 1
       }
     }
     if ((((this.width / 3) * 2) < x) && (x <= this.width)) {
       if (y <= this.height / 3) {
-        ticTacToe.setPosition(252, 52);
-        ticTacToe.setGridLocation(0, 2);
+        row = 0
+        col = 2
       } else if ((this.height / 3 < y) && (y <= (this.height / 3) * 2)) {
-        ticTacToe.setPosition(252, 152);
-        ticTacToe.setGridLocation(1, 2);
+        row = 1
+        col = 2
       } else if ((((this.height / 3) * 2) < y) && (y < this.height)) {
-        ticTacToe.setPosition(252, 252);
-        ticTacToe.setGridLocation(2, 2);
+        row = 2
+        col = 2
       }
     }
-    ticTacToe.takeTurn();
+
+    ticTacToe.takeTurn(row, col);
     ticTacToe.checkForGameOver();
 
     // Computers turn
@@ -94,10 +97,7 @@ function startGame() {
   // Computer starts 
   if (ticTacToe.computersTurn) {
     ticTacToe.computersTurn = false;
-    var space = ticTacToe.grid.find(square => square.num === '4');
-    ticTacToe.setPosition(space.xcoord, space.ycoord);
-    ticTacToe.setGridLocation(space.row, space.col)
-    ticTacToe.takeTurn();
+    ticTacToe.takeTurn(1,1);
   } else {
     ticTacToe.computersTurn = true;
   }
@@ -115,6 +115,7 @@ function tallyLine(winLine, gridVal) {
 function nextMove(winLine, gridVal, player) {
   let tally = tallyLine(winLine, gridVal)
   if(tally[player] === 1  && tally[''] === 2 ) {
+    console.log(winLine, gridVal, tally)
     return winLine.find(number => gridVal[number] === '')
   }
 }
@@ -122,6 +123,7 @@ function nextMove(winLine, gridVal, player) {
 function checkWinningLine(winLine, gridVal, player) {
   let tally = tallyLine(winLine, gridVal)
   if (tally[player] === 2 && tally[''] === 1) {
+    console.log(winLine, gridVal, tally)
     return winLine.find(number => gridVal[number] === '')
   } 
 }
@@ -130,22 +132,23 @@ function bestMove(winLines, grid, player) {
   console.log(player)
   // Make a line or block opponents line
   const gridValues = grid.map(obj => obj.value)
+   console.log(gridValues)
   let winningMove = null
   let blockingMove = null
     // check for winning move
   winLines.find(winLine => {
-    winningMove = checkWinningLine(winLine, gridValues, player)
+    return winningMove = checkWinningLine(winLine, gridValues, player)
   })
     // block opponents winning move
   winLines.find(winLine => {
     let opponent = (player === 'X' ? 'O' : 'X')
-    blockingMove = checkWinningLine(winLine, gridValues, opponent)
+    return blockingMove = checkWinningLine(winLine, gridValues, opponent)
   })
 
     // find next move
     let move = null
       winLines.find(winLine => {
-        move = nextMove(winLine, gridValues, player)
+        return move = nextMove(winLine, gridValues, player)
       })
       
   console.log('Winning move:', winningMove)
@@ -167,17 +170,14 @@ function chooseMove() {
   let num = bestMove(ticTacToe.winningLines, 
                      ticTacToe.grid, 
                      ticTacToe.side)
+  
   var freeSquare = ticTacToe.grid.find(square => square.num === num);
   
   // find a square that will make a winning line
   if (freeSquare) {
     console.log(freeSquare);
-    ticTacToe.setPosition(freeSquare.xcoord, freeSquare.ycoord);
-    ticTacToe.setGridLocation(freeSquare.row, freeSquare.col);
     window.clearTimeout(timerId);
-    console.log('Row: ' + ticTacToe.row);
-    console.log('Column: ' + ticTacToe.col);
-    ticTacToe.takeTurn();
+    ticTacToe.takeTurn(freeSquare.row, freeSquare.col);
     ticTacToe.checkForGameOver();
   } else {
     console.log("no free squares left");
@@ -190,7 +190,7 @@ function isPositionFree(square) {
   //ticTacToe.grid.find(square => ) 
 }
 
-function drawGrid() {
+function drawGameGrid() {
   var canvas = document.getElementById('game');
   var ctx = canvas.getContext('2d');
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -202,7 +202,7 @@ function drawGrid() {
   ctx.fillRect(200, 10, 5, 280);
 }
 
-function drawCircle(x, y) {
+function drawCircleAtPoint(x, y) {
   const canvas = document.getElementById('game');
   const ctx = canvas.getContext('2d');
   // Draw a Circle centred on point x,y
@@ -213,7 +213,7 @@ function drawCircle(x, y) {
   ctx.stroke();
 }
 
-function drawCross(x, y) {
+function drawCrossAtPoint(x, y) {
   const canvas = document.getElementById('game');
   const ctx = canvas.getContext('2d');
   const n = 32;
@@ -229,7 +229,6 @@ function drawCross(x, y) {
 }
 
 var ticTacToe = {
-  players: 0,
   "computerPlaysXs": true,
   "computersTurn": true,
   "x": 0,
@@ -238,7 +237,7 @@ var ticTacToe = {
   "col": 0,
   "side": 'X',
   "grid": [{
-    num: '0',
+    num: 0,
     row: 0,
     col: 0,
     xcoord: 52,
@@ -246,7 +245,7 @@ var ticTacToe = {
     score: 3,
     value: ''
   }, {
-    num: '1',
+    num: 1,
     row: 0,
     col: 1,
     xcoord: 152,
@@ -254,7 +253,7 @@ var ticTacToe = {
     score: 2,
     value: ''
   }, {
-    num: '2',
+    num: 2,
     row: 0,
     col: 2,
     xcoord: 252,
@@ -262,7 +261,7 @@ var ticTacToe = {
     score: 3,
     value: ''
   }, {
-    num: '3',
+    num: 3,
     row: 1,
     col: 0,
     xcoord: 52,
@@ -270,7 +269,7 @@ var ticTacToe = {
     score: 2,
     value: ''
   }, {
-    num: '4',
+    num: 4,
     row: 1,
     col: 1,
     xcoord: 152,
@@ -278,7 +277,7 @@ var ticTacToe = {
     score: 4,
     value: ''
   }, {
-    num: '5',
+    num: 5,
     row: 1,
     col: 2,
     xcoord: 252,
@@ -286,7 +285,7 @@ var ticTacToe = {
     score: 2,
     value: ''
   }, {
-    num: '6',
+    num: 6,
     row: 2,
     col: 0,
     xcoord: 52,
@@ -294,7 +293,7 @@ var ticTacToe = {
     score: 3,
     value: ''
   }, {
-    num: '7',
+    num: 7,
     row: 2,
     col: 1,
     xcoord: 152,
@@ -302,7 +301,7 @@ var ticTacToe = {
     score: 2,
     value: ''
   }, {
-    num: '8',
+    num: 8,
     row: 2,
     col: 2,
     xcoord: 252,
@@ -344,39 +343,37 @@ var ticTacToe = {
     } else {
       console.log('square not found');
     }
-  },
-  "takeTurn": function() {
+  }, 
+  "takeTurn": function(row, col) {
     //  where position is a free space on the game board
-    // validate position
-    if ((this.row >= 0) && (this.row < 3) &&
-      (this.col >= 0) && (this.col < 3)) {
-      // is valid board position and is a free position in this game
-      if (this.game[this.row][this.col] === '') {
+    let square = this.grid.find(x => (x.row === row && x.col === col))
+    if (square.value === '') {
         // set grid value
-        this.setGridValue();
-        this.game[this.row][this.col] = this.side;
+        square.value = this.side
         if (this.side === 'X') {
-          drawCross(this.x, this.y);
-          this.side = 'O';
+          drawCrossAtPoint(square.xcoord, square.ycoord)
+          this.side = 'O'
         } else {
-          drawCircle(this.x, this.y);
-          this.side = 'X';
+          drawCircleAtPoint(square.xcoord, square.ycoord)
+          this.side = 'X'
         }
-        console.log(this.grid);
-      } else {
-        console.log('square is taken');
-      }
+        console.log(this.grid)
+    } else {
+      console.log('square is taken')
     }
   },
   "checkForGameOver": function() {
     // Either all squares are filled
-    var hasBlankSquare = this.game.reduce((a, b) => a.concat(b)).includes('');
+    var hasBlankSquare = this.grid.some(a => a.value === '');
     if (hasBlankSquare === false) {
       console.log('Game Over');
       // reset game grid
       timerId = window.setTimeout(this.resetGame, 1500);
     }
     // OR there is a winning line
+    else {
+
+    }
   },
   "checkForAWinner": function() {
 
@@ -387,7 +384,7 @@ var ticTacToe = {
   },
   "resetGame": function() {
     playing = false;
-    drawGrid();
+    drawGameGrid();
     clearGame();
     window.clearTimeout(timerId);
   }
