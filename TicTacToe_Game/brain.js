@@ -1,56 +1,17 @@
-var winningLines = [
-  ['0', '1', '2'],
+const winningLines = [
+  ['0', '4', '8'],
+  ['2', '4', '6'],
   ['3', '4', '5'],
+  ['1', '4', '7'],
+  ['0', '1', '2'],
   ['6', '7', '8'],
   ['0', '3', '6'],
-  ['1', '4', '7'],
-  ['2', '5', '8'],
-  ['0', '4', '8'],
-  ['2', '4', '6']
+  ['2', '5', '8']
 ]
 
-var grid = [{
-  num: '0',
-  rank: 3,
-  value: ''
-}, {
-  num: '1',
-  rank: 2,
-  value: ''
-}, {
-  num: '2',
-  rank: 3,
-  value: ''
-}, {
-  num: '3',
-  rank: 2,
-  value: ''
-}, {
-  num: '4',
-  rank: 4,
-  value: ''
-}, {
-  num: '5',
-  rank: 2,
-  value: 'X'
-}, {
-  num: '6',
-  rank: 3,
-  value: ''
-}, {
-  num: '7',
-  rank: 2,
-  value: 'O'
-}, {
-  num: '8',
-  rank: 3,
-  value: 'O'
-}]
-
-// console.log(winningLines.filter(array => array.find(ele => ele === '3')))
-// // Choose a potential winning line
-// // filter highest ranked empty square
-// console.log(grid.filter(obj => obj.value === '' && obj.rank >= 3))
+var grid = [{ num: '0', rank: 3, value: 'E'},  { num: '1', rank: 2, value: 'E'},  { num: '2', rank: 3, value: 'E'}, 
+            { num: '3', rank: 2, value: 'E'}, { num: '4', rank: 4, value: 'O'}, { num: '5', rank: 2, value: 'E'}, 
+            { num: '6', rank: 3, value: 'E'},  { num: '7', rank: 2, value: 'E'}, { num: '8', rank: 3, value: 'E'}]
 
 function tallyLine(winLine, gridVal) {
   let tally = {}
@@ -62,39 +23,26 @@ function tallyLine(winLine, gridVal) {
 }
 
 function nextMove(winLine, gridVal, player) {
-  if(tallyLine(winLine, gridVal)[player] === 1 
-     && tallyLine(winLine, gridVal)[''] === 2 ) {
-    return winLine.find(number => gridVal[number] === '')
+  let tally = tallyLine(winLine, gridVal)
+  console.log(winLine, gridVal, tally)
+  if((tally['E'] === 2) && (tally[player] === 1)){
+    return winLine.find(number => gridVal[number] === 'E')
   }
 }
 
 function checkWinningLine(winLine, gridVal, player) {
   let tally = tallyLine(winLine, gridVal)
-
-  console.log(player, winLine, JSON.stringify(tally))
-  if (tally[player] === 2 && tally[''] === 1) {
-    let num = null
-    winLine.forEach(number => {
-      if (gridVal[number] === '') num = number
-    })
-
-    return num
-  } else return null
+  if ((tally[player] === 2) && (tally['E'] === 1)) {
+    console.log(winLine, gridVal, tally)
+    return winLine.find(number => gridVal[number] === 'E')
+  } 
 }
-// const gridValues = grid.map(obj => obj.value)
-// const player = 'O'
-// winningLines.forEach(line => {
-//   let winningMove = checkWinningLine(line, gridValues, player)
-//   if(winningMove) {
-//     console.log(winningMove, 'is winning move for player', player)
-//   }
-// })
 
-bestMove(winningLines, grid, 'X')
-  //const gridScores = grid.filter(obj => obj.value === '') 
+bestMove(winningLines, grid, 'O')
 function bestMove(winLines, grid, player) {
   // Make a line or block opponents line
   const gridValues = grid.map(obj => obj.value)
+  console.log(player)
   let winningMove = null
   let blockingMove = null
     // check for winning move
@@ -116,4 +64,13 @@ function bestMove(winLines, grid, player) {
   console.log('Winning move:', winningMove)
   console.log('Blocking move:', blockingMove)
   console.log('Next move:', move)
+  
+  if(winningMove)
+    return winningMove
+  if(blockingMove)
+    return blockingMove
+  if(move)
+    return move
+  else
+    return null
 }
