@@ -1,16 +1,27 @@
 <div class='container'>
-  <p>
+  <p id='title'>
     SHALL WE PLAY A GAME?
   </p>
-  <ul>TIC TAC TOE
-    <li id='X'>
-      PLAY <span id='X'>[X]</span>
+  <ul><a>TIC-TAC-TOE</a>
+    <li id='X'><a> 
+      PLAY <span id='X'><i class='fa fa-times'></i></span></a>
     </li>
-    <li id='O'>
-      OR <span id='O'>[O]</span>
+    <li id='O'><a>
+      OR <span id='O'><i class='fa fa-circle-o'></i></span></a>
     </li>
   </ul>
   <div>
     <canvas id="game" width="300" height="300">TIC-TAC-TOE game goes in here.</canvas>
+  </div>
+  <div class='row score'>
+    <div class='col-md-4'>
+      <h1><span id='human'><i class='fa fa-user'></i></span>:<span id='human-wins'>0</span></h1>
+    </div>
+       <div class='col-md-4'>
+      <h1><span id='computer'><i class='fa fa-laptop'></i></span>:<span id='comp-wins'>0</span></h1>
+    </div>
+    <div class='col-md-4'>
+      <h1><span id='drawn'><i class='fa fa-ban'></i></span>:<span id='draws'>0</span></h1>
+    </div>
   </div>
 </div>
