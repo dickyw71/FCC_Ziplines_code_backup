@@ -1,0 +1,30 @@
+{
+  "name": "simon_game",
+  "version": "0.0.1",
+  "description": "Simon Game frontend web app for Free Code Camp Frontend Cert",
+  "main": "karma.conf.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "karma.conf.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dickyw71/FCC_Ziplines_code_backup/SimonGame"
+  },
+  "keywords": [
+    "Simon",
+    "javascript"
+  ],
+  "author": "Richard Wheatley",
+  "license": "MIT",
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-karma": "^2.0.0",
+    "jasmine-core": "^2.4.1",
+    "karma": "^1.1.0",
+    "karma-firefox-launcher": "^1.0.0",
+    "karma-jasmine": "^1.0.2"
+  }
+}
