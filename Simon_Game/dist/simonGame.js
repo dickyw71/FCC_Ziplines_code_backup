@@ -33,6 +33,7 @@ function init() {
     steps = []
     state = 'OFF'
     playerButtons = []
+    strictMode = false
 }
 
 function turnSimonOff() {
@@ -44,7 +45,9 @@ function turnSimonOn() {
 }
 
 function strict(setting) {
-    strictMode = setting
+    if(state !== 'OFF') {
+        strictMode = setting
+    }
 }
 
 function startSimonGame() {

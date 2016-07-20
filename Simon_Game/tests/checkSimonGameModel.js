@@ -63,6 +63,16 @@ describe('The Simon Game', function() {
         expect(stepCount).toEqual(1)
     })
 
+    it('should (indicate error and) restart when in strict mode and incorrect step entered', function() {
+       turnSimonOn()
+        startSimonGame()
+        for(var i=0; i<10;i++) {
+            buttonPress(steps[i])
+        }
+        buttonPress(buttonColours.filter(function(colour) { colour !== steps[9] })[0])
+        expect(stepCount).toEqual(1)
+    })
+
     it('should have a restart option', function() {
         turnSimonOn()
         startSimonGame()
@@ -89,5 +99,20 @@ describe('The Simon Game', function() {
         expect(stepCount).toEqual(1)
 
         
+    })
+
+    it('should be able to toggle strictMode ON and OFF only when the game is turned ON', function() {
+        // cannot toggle strict when turned off
+        expect(strictMode).toBe(false)
+        strict(true)
+        expect(strictMode).toBe(false)
+
+        // can toggle strict when turned on
+        turnSimonOn()
+        expect(strictMode).toBe(false)
+        strict(true)
+        expect(strictMode).toBe(true)
+        strict(false)
+        expect(strictMode).toBe(false)
     })
 })
