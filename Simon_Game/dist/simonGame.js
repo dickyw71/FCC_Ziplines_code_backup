@@ -7,26 +7,6 @@ const buttonColours = ['RED','GREEN','BLUE','YELLOW']
 const maxSteps = 20
 const simonSound = {'RED': '1', 'YELLOW': '2', 'GREEN': '3', 'BLUE': '4'}
 
-// ion sound config
-ion.sound({
-    sounds: [
-        {
-            name: "1"
-        },
-        {   
-            name: "2"
-        },
-       {   
-            name: "3"
-        },
-        {   
-            name: "3"
-        }        
-    ],
-    path: "https://s3.amazonaws.com/freecodecamp/simonSound",
-    preload: true,
-    volume: 0.9
-})
 
 function init() {
     stepCount = 0
@@ -38,6 +18,7 @@ function init() {
 
 function turnSimonOff() {
     init()
+    powerDown()
 }
 
 function turnSimonOn() {
@@ -88,8 +69,10 @@ function buttonPress(colour) {
         }
     }
     else {
+        // play error sound
+        console.log('Error!')
         if(strictMode) {
-            // play error sound
+            console.log('Starting again')
             restartSimonGame() 
 
         }
@@ -103,13 +86,51 @@ function checkPlayerButtonsMatchSimonsSteps() {
 }
 
 
-function playSound() {
-    // play sound
-    ion.sound.play("secondsOut")
-}
-
 // Returns a random integer between min (included) and max (excluded)
 // Using Math.round() will give you a non-uniform distribution!
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
+}
+
+function powerDown() {
+    // turn strict lamp off
+    strictLamp.setAttribute('fill', 'black')
+    
+    // turn count display off
+}
+
+// add event listener
+var powerCtrl = document.getElementById('power');
+var powerSwitch = document.getElementById('powerSwitch')
+powerCtrl.addEventListener('click', switchPower, false)
+
+var strictBtn = document.getElementById('strictBtn')
+var strictLamp = document.getElementById('strictLamp')
+strictBtn.addEventListener('click', toggleStrict, false)
+
+
+function switchPower() {
+    if(state == 'OFF') {
+        turnSimonOn()
+        if(powerSwitch.getAttribute('x') == '580') {
+            powerSwitch.setAttribute('x', '602')
+        }
+    }
+    else {
+        turnSimonOff()
+        powerSwitch.setAttribute('x', '580')
+    }
+}
+
+function toggleStrict() {
+    if(strictMode) {
+        strict(false)
+        strictLamp.setAttribute('fill', 'black')
+    }
+    else {
+        strict(true)
+        if(strictMode) {
+            strictLamp.setAttribute('fill', 'red')
+        }
+    }
 }
