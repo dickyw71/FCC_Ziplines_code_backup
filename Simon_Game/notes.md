@@ -26,7 +26,7 @@ RED, GREEN, BLUE & YELLOW button sounds
    simonSound1   E   - Blue lower right
    simonSound2   C#  - Yellow lower left
    simonSound3   A   - Red upper right
-   simonSound3   E   - Green upper left (1 Octave lower than Blue)
+   simonSound4   E   - Green upper left (1 Octave lower than Blue)
 RED, GREEN, BLUE & YELLOW button lamps
 Strict On lamp
 On/Off lamp

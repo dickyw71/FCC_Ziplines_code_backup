@@ -5,15 +5,15 @@ let playerButtons = []
 let strictMode = false
 let beforeStepTimerID = null
 let afterStepTimerID = null
-const beforeStepPause = 500 // milliseconds
-const stepDuration = 1000   // milliseconds
+const beforeStepPause = 400 // milliseconds
+const stepDuration = 600   // milliseconds
 const buttonColours = ['RED', 'GREEN', 'BLUE', 'YELLOW']
 const maxSteps = 20
 const simonSound = {
-  'RED': '1',
+  'BLUE': '1',
   'YELLOW': '2',
-  'GREEN': '3',
-  'BLUE': '4'
+  'RED': '3',
+  'GREEN': '4'
 }
 
 function init() {
@@ -63,23 +63,19 @@ function incrementSteps() {
   steps.push(buttonColours[getRandomInt(0, buttonColours.length)])
   stepCount = steps.length
   console.log(steps)
-  displayText.innerHTML = ('0' + stepCount).slice(-2)
-    // play button press sequence  
-
-  // add the button event listeners
-
 }
 
 function playSequence(index) {
 
-  //removeButtonClickHandlers()
+  displayText.innerHTML = ('0' + stepCount).slice(-2)
+  removeButtonClickHandlers()
 
   if (index < steps.length) {
     playStep(steps[index], index)
   } else {
     window.clearTimeout(afterStepTimerID)
-    window.clearTimeout(beforeStepTimerID)
-    //addButtonClickHandlers()
+    window.clearTimeout(beforeStepTimerID)  
+    addButtonClickHandlers()
   }
 }
 
@@ -134,7 +130,7 @@ function buttonPress(colour) {
 
       if (stepCount !== maxSteps) {
         incrementSteps()
-        playSequence(0)
+        beforeStepTimerID = window.setTimeout(playSequence, 1500, 0)
       } else {
         console.log('Victory!')
         restartSimonGame()
@@ -143,12 +139,12 @@ function buttonPress(colour) {
   } else {
     // play error sound
     console.log('Error!')
+    displayText.innerHTML = '!!'
     playerButtons.length = 0 // empty the array
-    playSequence(0)
+    beforeStepTimerID = window.setTimeout(playSequence, 1500, 0)
     if (strictMode) {
       console.log('Starting again')
-      restartSimonGame()
-
+      beforeStepTimerID = window.setTimeout(restartSimonGame, 1500)
     }
   }
 }
@@ -192,17 +188,26 @@ var blueBtn = document.getElementById('blueBtn')
 var yellowBtn = document.getElementById('yellowBtn')
 
 function addButtonClickHandlers() {
-  greenBtn.addEventListener('click', buttonPress('GREEN'), false)
-  redBtn.addEventListener('click', buttonPress('RED'), false)
-  blueBtn.addEventListener('click', buttonPress('BLUE'), false)
-  yellowBtn.addEventListener('click', buttonPress('YELLOW'), false)
+  // event listeners that light-up the colour buttons when pressed
+  greenBtn.addEventListener('mousedown', mousedownGreen, false)
+  greenBtn.addEventListener('mouseup', mouseupGreen, false)
+  redBtn.addEventListener('mousedown', mousedownRed, false)
+  redBtn.addEventListener('mouseup', mouseupRed, false)
+  blueBtn.addEventListener('mousedown', mousedownBlue, false)
+  blueBtn.addEventListener('mouseup', mouseupBlue, false)
+  yellowBtn.addEventListener('mousedown', mousedownYellow, false)
+  yellowBtn.addEventListener('mouseup', mouseupYellow, false)
 }
 
 function removeButtonClickHandlers() {
-  greenBtn.removeEventListener('click', buttonPress)
-  redBtn.removeEventListener('click', buttonPress)
-  blueBtn.removeEventListener('click', buttonPress)
-  yellowBtn.removeEventListener('click', buttonPress)
+  greenBtn.removeEventListener('mousedown', mousedownGreen)
+  greenBtn.removeEventListener('mouseup', mouseupGreen)
+  redBtn.removeEventListener('mousedown', mousedownRed)
+  redBtn.removeEventListener('mouseup', mouseupRed)
+  blueBtn.removeEventListener('mousedown', mousedownBlue)
+  blueBtn.removeEventListener('mouseup', mouseupBlue)
+  yellowBtn.removeEventListener('mousedown', mousedownYellow)
+  yellowBtn.removeEventListener('mouseup', mouseupYellow)
 }
 
 function switchPower() {
@@ -231,25 +236,63 @@ function toggleStrict() {
   }
 }
 
-// event listeners that light-up the colour buttons when pressed
-greenBtn.addEventListener('mousedown', pressGreen, false)
-greenBtn.addEventListener('mouseup', releaseGreen, false)
-redBtn.addEventListener('mousedown', pressRed, false)
-redBtn.addEventListener('mouseup', releaseRed, false)
-blueBtn.addEventListener('mousedown', pressBlue, false)
-blueBtn.addEventListener('mouseup', releaseBlue, false)
-yellowBtn.addEventListener('mousedown', pressYellow, false)
-yellowBtn.addEventListener('mouseup', releaseYellow, false)
+
+function mousedownGreen(event) {
+  event.preventDefault() 
+  pressGreen()
+}
+
+function mouseupGreen(event) {
+  event.preventDefault() 
+  releaseGreen()
+  buttonPress('GREEN')
+}
+
+function mousedownRed(event) {
+  event.preventDefault() 
+  pressRed()
+}
+
+function mouseupRed(event) {
+  event.preventDefault() 
+  releaseRed()
+  buttonPress('RED')
+}
+
+function mousedownBlue(event) {
+  event.preventDefault() 
+  pressBlue()
+}
+
+function mouseupBlue(event) {
+  event.preventDefault() 
+  releaseBlue()
+  buttonPress('BLUE')
+}
+
+function mousedownYellow(event) {
+  event.preventDefault() 
+  pressYellow()
+}
+
+function mouseupYellow(event) {
+  event.preventDefault() 
+  releaseYellow()
+  buttonPress('YELLOW')
+}
 
 function pressGreen() {
+  playSimonSound(simonSound.GREEN)
   greenBtn.setAttribute('fill', '#00FF00')
 }
 
 function releaseGreen() {
+  
   greenBtn.setAttribute('fill', '#009900')
 }
 
 function pressRed() {
+  playSimonSound(simonSound.RED)
   redBtn.setAttribute('fill', '#FF0000')
 }
 
@@ -258,6 +301,7 @@ function releaseRed() {
 }
 
 function pressBlue() {
+  playSimonSound(simonSound.BLUE)
   blueBtn.setAttribute('fill', '#0000FF')
 }
 
@@ -266,11 +310,21 @@ function releaseBlue() {
 }
 
 function pressYellow() {
+  playSimonSound(simonSound.YELLOW)
   yellowBtn.setAttribute('fill', '#FFFF00')
 }
 
 function releaseYellow() {
-  yellowBtn.setAttribute('fill', '#E6E600')
+  yellowBtn.setAttribute('fill', '#999900')
+}
+
+function playSimonSound(sound) {
+  let audio = document.getElementById('audio')
+    let div1 = document.getElementById('div-1')
+    if(audio) {
+      audio.remove()
+    }    
+    div1.innerHTML = '<audio id="audio" controls="controls" autobuffer="autobuffer" autoplay="autoplay"> <source src="https://s3.amazonaws.com/freecodecamp/simonSound' + sound + '.mp3"  type="audio/mpeg"> </audio>'  
 }
 
 document.addEventListener('keydown', (event) => {
