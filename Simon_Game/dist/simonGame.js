@@ -133,7 +133,8 @@ function buttonPress(colour) {
         beforeStepTimerID = window.setTimeout(playSequence, 1500, 0)
       } else {
         console.log('Victory!')
-        restartSimonGame()
+        displayText.innerHTML = '😎'
+        beforeStepTimerID = window.setTimeout(restartSimonGame, 2500)
       }
     }
   } else {
