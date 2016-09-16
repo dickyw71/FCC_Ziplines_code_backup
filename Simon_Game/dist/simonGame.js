@@ -5,6 +5,7 @@ let playerButtons = []
 let strictMode = false
 let beforeStepTimerID = null
 let afterStepTimerID = null
+let speedUp = 0
 const beforeStepPause = 400 // milliseconds
 const stepDuration = 600   // milliseconds
 const buttonColours = ['RED', 'GREEN', 'BLUE', 'YELLOW']
@@ -23,6 +24,8 @@ function init() {
   playerButtons.length = 0
   strictMode = false
   displayText.innerHTML = '--'
+  countText.innerHTML = 'COUNT'
+  speedUp = 0
 }
 
 function turnSimonOff() {
@@ -62,7 +65,15 @@ function restartSimonGame() {
 function incrementSteps() {
   steps.push(buttonColours[getRandomInt(0, buttonColours.length)])
   stepCount = steps.length
-  console.log(steps)
+  if(stepCount === 5) {
+    speedUp = 1
+  }
+  if(stepCount === 10) {
+    speedUp = 2
+  }
+  if(stepCount === 15) {
+    speedUp = 3
+  }
 }
 
 function playSequence(index) {
@@ -82,7 +93,8 @@ function playSequence(index) {
 function playStep(colour, index) {
   
     turnOnButton(colour)  
-    afterStepTimerID = window.setTimeout(turnOffButton, stepDuration, colour, index)  
+    afterStepTimerID = window.setTimeout(turnOffButton, 
+                             (stepDuration-(speedUp*100)), colour, index)  
 }
 
 function turnOnButton(colour) {
@@ -117,7 +129,8 @@ function turnOffButton(colour, index) {
       releaseGreen()
       break;
   }
-  beforeStepTimerID = window.setTimeout(playSequence, beforeStepPause, (index + 1))
+  beforeStepTimerID = window.setTimeout(playSequence, 
+                    (beforeStepPause-(speedUp*50)), (index + 1))
 }
 
 function buttonPress(colour) {
@@ -133,7 +146,8 @@ function buttonPress(colour) {
         beforeStepTimerID = window.setTimeout(playSequence, 1500, 0)
       } else {
         console.log('Victory!')
-        displayText.innerHTML = '😎'
+        displayText.innerHTML = '✌️'
+        countText.innerHTML = 'VICTORY'
         beforeStepTimerID = window.setTimeout(restartSimonGame, 2500)
       }
     }
@@ -328,22 +342,3 @@ function playSimonSound(sound) {
     div1.innerHTML = '<audio id="audio" controls="controls" autobuffer="autobuffer" autoplay="autoplay"> <source src="https://s3.amazonaws.com/freecodecamp/simonSound' + sound + '.mp3"  type="audio/mpeg"> </audio>'  
 }
 
-document.addEventListener('keydown', (event) => {
-  const keyName = event.key;
-
-  switch(keyName) {
-    case "b":
-      buttonPress('BLUE')
-      break
-      case "r":
-      buttonPress('RED')
-      break
-      case "y":
-      buttonPress('YELLOW')
-      break
-      case 'g':
-      buttonPress('GREEN')
-      break
-  }
-  
-}, false)

@@ -64,8 +64,9 @@ describe('The Simon Game', function() {
     })
 
     it('should (indicate error and) restart when in strict mode and incorrect step entered', function() {
-       turnSimonOn()
+        turnSimonOn()
         startSimonGame()
+        strict(true)
         for(var i=0; i<10;i++) {
             buttonPress(steps[i])
         }

@@ -1,0 +1,31 @@
+#power:hover {
+  cursor: pointer;
+}
+
+#startBtn:hover {
+  cursor: pointer;
+}
+
+#strictBtn:hover {
+  cursor: pointer;
+}
+
+html {
+  background-image: url('http://www.photos-public-domain.com/wp-content/uploads/2011/01/orange-floral-carpet-texture.jpg');
+  background-size: 100%;
+    
+}
+
+svg {
+  font-family: 'Roboto Slab', serif;
+}
+
+#simonText {
+  font-size: 60px;
+  font-weight: 900;
+}
+
+#displayText {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 40px;
+}
