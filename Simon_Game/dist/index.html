@@ -1,10 +1,84 @@
 <html>
     <head>
-        <script src='https://cdnjs.cloudflare.com/ajax/libs/ion-sound/3.0.7/js/ion.sound.min.js'></script>
+        <link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Share+Tech+Mono" rel="stylesheet">
     </head>
     <body>
-        <div class='buttons'>
-            <p>Hello World!</p>
-        </div>
+
+<?xml version="1.0" standalone="no"?>
+<svg width="1000" height="650" version="1.1" xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+    <filter id="f1" x="0" y="0" width="200%" height="200%">
+      <feOffset result="offOut" in="SourceGraphic" dx="0" dy="10" />
+      <feColorMatrix result="matrixOut" in="offOut" type="matrix"
+      values="0.2 0 0 0 0 0 0.2 0 0 0 0 0 0.2 0 0 0 0 0 1 0" />
+      <feGaussianBlur result="blurOut" in="matrixOut" stdDeviation="10" />
+      <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />    
+    </filter>
+    <filter id="f2" x="0" y="0" width="120%" height="120%">
+     <feOffset result="offOut" in="SourceGraphic" dx="0" dy="0" />
+      <feColorMatrix result="matrixOut" in="offOut" type="matrix"
+      values="0.2 0 0 0 0 0 0.2 0 0 0 0 0 0.2 0 0 0 0 0 1 0" />
+      <feGaussianBlur result="blurOut" in="matrixOut" stdDeviation="10" />
+      <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />      
+    </filter>
+  </defs>
+  <circle cx="600" cy="260" r="250" stroke="#2A2A2A" fill="#2A2A2A" stroke-width="2" />
+  <circle cx="600" cy="260" r="130" stroke="silver" fill="silver" stroke-width="2"/>
+
+   <text id="simonText" x="505" y="215">Simon</text>
+   <text id="regMarkText" x="685" y="190">®</text>
+  
+  <rect x="500" y="230" rx="5" ry="5" width="60" height="45"/>
+  <text id="displayText" x="508" y="266" fill='#330000'>--</text>
+ <text id="countText" x="500" y="290">COUNT</text>
+  
+  <circle id="startBtn" cx="610" cy="260" r="12" stroke="black" fill="red" stroke-width="4" />
+  
+ <text x="585" y="290">START</text> 
+  
+  <circle id="strictBtn" cx="675" cy="260" r="12" stroke="black" fill="yellow" stroke-width="4"/>
+  <circle id="strictLamp" cx="675" cy="237" r="4" stroke="black" fill="black" stroke-width="2"/>
+  <text x="650" y="290">STRICT</text> 
+
+  <g id="power">
+<rect x="576" y="320" rx="5" ry="5" width="50" height="24"/>
+<rect id="powerSwitch" x="580" y="322" rx="4" ry="4" width="20" height="20" fill="dodgerblue"/> 
+  </g>
+<text x="542" y="338">OFF</text>
+<text x="630" y="338">ON</text>
+  
+  <path id="greenBtn" 
+        d="M 585 25 
+           A 235 235 0 0 0 365 255
+           H 455
+           A 145 145 0 0 1 585 115 Z" fill="#009900"/>
+  
+  <path id="redBtn" 
+        d="M 615 25
+           A 235 235 0 0 1 835 255
+           H 745
+           A 145 145 0 0 0 615 115 Z" 
+        fill="#990000"/>
+        
+  <path id="blueBtn" 
+        d="M 833 285
+           A 235 235 0 0 1 615 494
+           V 405
+           A 145 145 0 0 0 744 285
+           Z"
+        fill="#000099" />
+ 
+    <path id="yellowBtn" 
+        d="M 368 285
+           A 235 235 0 0 0 585 494
+           V 405
+           A 145 145 0 0 1 456 285
+           Z"
+        fill="#999900" />
+</svg>
+<div id='div-1'>
+</div>
     </body>
 </html>
